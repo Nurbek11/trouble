@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\v1\Rest;
 
 use App\Http\Controllers\Controller;
+use App\Models\Goods;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -65,8 +66,23 @@ class AuthController extends Controller
         return self::Response(200, ['access_token' => $user['access_token']]);
     }
 
-    public function me(Request $request)
+    public function search(Request $request)
     {
+        $rules = [
+            'search' => '',
+        ];
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) return self::Response(400, null,
+            $validator->errors()->first());
+
+        $sql = '%' . $request['search'] . '%';
+
+
+        $goods = Goods::where('name', 'like', $sql);
+
+
+        return self::Response(200, ['goods' => $goods->paginate(10)]);
+
 
     }
 }

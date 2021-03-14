@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\v1\Rest\AuthController;
+use App\Http\Controllers\v1\Rest\OrderController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -26,8 +27,9 @@ Route::group(['namespace' => 'v1/Rest', 'prefix' => 'v1'], function () {
         Route::post('login', [AuthController::class, 'login']);
     });
 
-    Route::group(['prefix' => 'goods', 'middleware' => 'auth:api'], function () {
-      
+    Route::group(['prefix' => 'goods', 'middleware' => 'authen'], function () {
+           Route::post('makeOrder',[OrderController::class,'makeOrder']);
+           Route::get('search',[AuthController::class,'search']);
     });
 
 
