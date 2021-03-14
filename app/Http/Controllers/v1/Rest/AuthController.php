@@ -41,13 +41,28 @@ class AuthController extends Controller
             $message->from('trouble2021sh@gmail.com', 'Congratulations!!!');
         });
 
-        return self::Response(200, [ 'access_token' => $user['access_token']]);
+        return self::Response(200, ['access_token' => $user['access_token']]);
 
     }
 
     public function login(Request $request)
     {
+        $rules = [
+            'email' => 'required|email:rfc,dns|exists:users,email',
+            'password' => 'required'
+        ];
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) return self::Response(400, null,
+            $validator->errors()->first());
 
+        $user = User::where('email', $request['email'])->first();
+
+        if (!$user || !Hash::check($request['password'], $user['password'])) {
+            return self::Response(400, null,
+                'wrong password');
+        }
+
+        return self::Response(200, ['access_token' => $user['access_token']]);
     }
 
     public function me(Request $request)

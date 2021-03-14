@@ -24,11 +24,9 @@ Route::group(['namespace' => 'v1/Rest', 'prefix' => 'v1'], function () {
     Route::group(['prefix' => 'auth'], function () {
         Route::post('register', [AuthController::class, 'register']);
         Route::post('login', [AuthController::class, 'login']);
-        Route::get('me', [AuthController::class, 'me']);
     });
 
     Route::group(['prefix' => 'profile', 'middleware' => 'auth:api'], function () {
-        Route::post('registerSecond', [AuthController::class, 'registerSecondStep']);
     });
 
 
