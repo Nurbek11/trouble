@@ -16,9 +16,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+//Route::middleware('auth:api')->get('/user', function (Request $request) {
+//    return $request->user();
+//});
 
 Route::group(['namespace' => 'v1/Rest', 'prefix' => 'v1'], function () {
 
@@ -27,12 +27,13 @@ Route::group(['namespace' => 'v1/Rest', 'prefix' => 'v1'], function () {
         Route::post('login', [AuthController::class, 'login']);
     });
 
-    Route::group(['prefix' => 'goods', 'middleware' => 'authen'], function () {
-           Route::post('makeOrder',[OrderController::class,'makeOrder']);
-           Route::get('search',[AuthController::class,'search']);
+    Route::group(['prefix' => 'goods'], function () {
+        Route::post('makeOrder', [OrderController::class, 'makeOrder'])->middleware('authen');
+        Route::get('search', [AuthController::class, 'search']);
     });
 
-
+    Route::get('categories', [AuthController::class, 'categories']);
+    Route::get('categories/{id}', [AuthController::class, 'categoryGoods']);
 
 });
 

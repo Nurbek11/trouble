@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\v1\Rest;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use App\Models\Goods;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -74,15 +76,18 @@ class AuthController extends Controller
         $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) return self::Response(400, null,
             $validator->errors()->first());
-
         $sql = '%' . $request['search'] . '%';
-
-
         $goods = Goods::where('name', 'like', $sql);
-
-
         return self::Response(200, ['goods' => $goods->paginate(10)]);
+    }
 
+    public function categories(){
+        $categories = Category::query();
+        return self::Response(200, ['categories' => $categories->paginate(10)]);
+    }
 
+    public function categoryGoods($id){
+        $goods = Goods::where('category_id',$id);
+        return self::Response(200, ['goods' => $goods->paginate(10)]);
     }
 }

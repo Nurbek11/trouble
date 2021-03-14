@@ -21,6 +21,7 @@ class OrderController extends Controller
 
         $user = $request['user'];
 
+        //creating the orders to each goods
         foreach ($request['goodsIds'] as $goods) {
             $order = new Order();
             $order['user_id'] = $user['id'];
