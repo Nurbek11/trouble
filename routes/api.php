@@ -26,7 +26,8 @@ Route::group(['namespace' => 'v1/Rest', 'prefix' => 'v1'], function () {
         Route::post('login', [AuthController::class, 'login']);
     });
 
-    Route::group(['prefix' => 'profile', 'middleware' => 'auth:api'], function () {
+    Route::group(['prefix' => 'goods', 'middleware' => 'auth:api'], function () {
+      
     });
 
 
